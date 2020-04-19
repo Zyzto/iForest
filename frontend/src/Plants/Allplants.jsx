@@ -12,7 +12,7 @@ export default class Allplants extends Component {
                             <Card style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src="holder.js/100px180" />
                                 <Card.Body>
-                                    <Card.Title>Plant Name</Card.Title>
+                                    <Card.Title></Card.Title>
                                     <Button variant="primary">Show</Button>
                                 </Card.Body>
                             </Card>
