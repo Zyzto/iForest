@@ -14,6 +14,18 @@ router.get("/", (req, res) => {
     });
 });
 
+//Show
+router.get("/plant/:id", (req, res) => {
+  Plant.findOne({ _id: req.params.id })
+    .then((plant) => {
+      return res.json({ message: plant });
+    })
+    .catch(() => {
+      console.log("plant Error", err);
+      return res.json({ message: "no Item avaiable" });
+    });
+});
+
 //CREATE
 router.post("/plant/create", (req, res) => {
   const { name, image, description, type } = req.body;
