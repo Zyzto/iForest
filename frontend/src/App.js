@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
-// import Allplants from './Plants/Allplants'
+import Allplants from './Plants/Allplants'
 import { Login } from './auth/Login.jsx'
 import { Register } from './auth/Register.jsx'
 import jwt_decode from 'jwt-decode'
@@ -24,7 +24,7 @@ export default class App extends Component {
       let token = localStorage.token
       let user = jwt_decode(token , process.env.SECRET).user
       this.setState({
-        user : user , 
+        user , 
         isLogin:true
       })
       }else {
@@ -41,11 +41,9 @@ export default class App extends Component {
          <Switch>
          <Route path= '/login' render ={ (props) => <Login  {...props} userLogin = {this.userLogin}/>} />
          <Route path= '/register' component ={Register} />  
-        {/* <Allplants/> */}
+        {<Allplants/>}
         </Switch>
       </div>
     )
   }
 }
-
-

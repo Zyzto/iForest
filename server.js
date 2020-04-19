@@ -5,10 +5,15 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require('cors')
+const plantRoute = require('./routes/plants.routes')
 
 //connect mongodb
 mongoose.connect(
-  process.env.DB,
+  process.env.DB,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+},
   () => console.log(`connected to ${process.env.DB}`),
   (err) => console.log(`MongoDB Connection Error: ${err}`)
 );
@@ -19,8 +24,10 @@ app.use(cors())
 app.use(express.urlencoded({extended:false}))
 
 // Routes for API
-/// End of Routes
+app.use(require('./routes/plants.routes'));
 app.use("/api/auth/", require("./routes/auth.routes"));
+/// End of Routes
+
 
 // 404 Routes
 app.get("*", (req, res) =>
