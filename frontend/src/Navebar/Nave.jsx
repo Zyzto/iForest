@@ -10,13 +10,13 @@ const Nave = () => {
   const [userInfo, setuserInfo] = useState({});
 
   const getName = async () => {
-    let user = await jwt_decode(localStorage.token).user;
-    console.log(`${URL}/api/auth/${user.id}`);
-    axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
-      console.log("----------", result);
-      setuserInfo(result.data.user);
-    });
-    if (user) {
+    if (localStorage.token) {
+      let user = await jwt_decode(localStorage.token).user;
+      console.log(`${URL}/api/auth/${user.id}`);
+      axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
+        console.log("----------", result);
+        setuserInfo(result.data.user);
+      });
     }
   };
   useEffect(() => {
@@ -24,7 +24,7 @@ const Nave = () => {
     console.log(userInfo);
   }, []);
 
-  const authNavDetails = userInfo ? (
+  const authNavDetails = localStorage.token ? (
     <>
       <NavDropdown
         title={userInfo.firstName}
@@ -46,7 +46,7 @@ const Nave = () => {
         to="/logout"
         onClick={() => {
           localStorage.removeItem("token");
-          this.forceUpdate();
+          // this.forceUpdate();
           Redirect("/");
         }}
       >
@@ -79,10 +79,11 @@ const Nave = () => {
         <Nav>{authNavDetails}</Nav>
       </Navbar>
     </>
-  ) : (<>
-      {console.log('hello')}
+  ) : (
+    <>
+      {console.log("hello")}
       <Spinner animation="border" />
-      </>
+    </>
   );
 };
 

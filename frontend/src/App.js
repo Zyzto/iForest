@@ -19,9 +19,9 @@ export default class App extends Component {
   }
 
   //Login jwt decoding
-  userLogin = async () => {
-    if (localStorage.token) {
-      let user = await jwt_decode(localStorage.token).user;
+  userLogin =  () => {
+    if (localStorage.token !== undefined) {
+      let user = jwt_decode(localStorage.token).user;
       this.setState({
         user,
         isLogin: true,
