@@ -1,58 +1,89 @@
-import React, { Component } from 'react'
-import { Navbar, Nav, Button, NavDropdown } from "react-bootstrap"
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Navbar, Nav, Button, NavDropdown, Spinner } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import URL from "../config/api";
 
-export default class Nave extends Component {
-    render() {
-        const authNavDetails = this.props.user ? (
-            <>
-                <Nav.Link as={Link} to="/login">
-                    <NavDropdown title={this.props.user.first_name} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.1">Add a plant</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">My Garden</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Reminders</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav.Link>
-                <Nav.Link as={Link} to="/logout" onClick={this.props.logout}>
-                    Logout
-              </Nav.Link>
-            </>
-        ) : (
-                <>
-                    <Nav.Link as={Link} to="/login">
-                        Login
-              </Nav.Link>
-                    <Nav.Link as={Link} to="/register">
-                        Register
-              </Nav.Link>
-                </>
-            );
-        return (
+const Nave = () => {
+  const [userInfo, setuserInfo] = useState({});
 
-            <div>
-                <Navbar bg="dark" variant="dark">
-                    <Nav className="mr-auto">
-                        <Navbar.Brand>iForest</Navbar.Brand>
-
-                        <Nav.Link to="/home">Home</Nav.Link>
-                    </Nav>
-                    <Nav>
-                        <Nav.Link to="/Allplants">Plants</Nav.Link>
-                        <Nav.Link to="/"></Nav.Link>
-                        {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.1">Add a plant</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">My Garden</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Reminders</NavDropdown.Item>
-                        </NavDropdown> */}
-                    </Nav>
-                <Nav>
-                    <Button variant="outline-light" >login</Button>
-                    <Button variant="outline-light" className="ml-3">Register</Button>
-                </Nav>
-                </Navbar>
-            </div >
-        )
+  const getName = async () => {
+    let user = await jwt_decode(localStorage.token).user;
+    console.log(`${URL}/api/auth/${user.id}`);
+    axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
+      console.log("----------", result);
+      setuserInfo(result.data.user);
+    });
+    if (user) {
     }
-}
+  };
+  useEffect(() => {
+    getName();
+    console.log(userInfo);
+  }, []);
+
+  const authNavDetails = userInfo ? (
+    <>
+      <NavDropdown
+        title={userInfo.firstName}
+        alignRight
+        id="dropdown-menu-align-right"
+      >
+        <LinkContainer to="#action_3.1">
+          <NavDropdown.Item>Account</NavDropdown.Item>
+        </LinkContainer>
+        <LinkContainer to="#action_3.2">
+          <NavDropdown.Item>Add a plant</NavDropdown.Item>
+        </LinkContainer>
+        <LinkContainer to="#action_3.3">
+          <NavDropdown.Item>My Garden</NavDropdown.Item>
+        </LinkContainer>
+      </NavDropdown>
+      <Nav.Link
+        as={Link}
+        to="/logout"
+        onClick={() => {
+          localStorage.removeItem("token");
+          this.forceUpdate();
+          Redirect("/");
+        }}
+      >
+        Logout
+      </Nav.Link>
+    </>
+  ) : (
+    <>
+      <Nav.Link as={Link} to="/login">
+        Login
+      </Nav.Link>
+      <Nav.Link as={Link} to="/register">
+        Register
+      </Nav.Link>
+    </>
+  );
+  return userInfo ? (
+    <>
+      <Navbar bg="dark" variant="dark">
+        <Nav className="mr-auto">
+          <Navbar.Brand as={Link} to="/">
+            iForest
+          </Navbar.Brand>
+        </Nav>
+        <Nav>
+          <Nav.Link as={Link} to="#hello">
+            Reminders
+          </Nav.Link>
+        </Nav>
+        <Nav>{authNavDetails}</Nav>
+      </Navbar>
+    </>
+  ) : (<>
+      {console.log('hello')}
+      <Spinner animation="border" />
+      </>
+  );
+};
+
+export default Nave;

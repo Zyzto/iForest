@@ -19,7 +19,7 @@ export default class App extends Component {
   }
 
   //Login jwt decoding
-  userLogin = async() => {
+  userLogin = async () => {
     if (localStorage.token) {
       let user = await jwt_decode(localStorage.token).user;
       this.setState({
@@ -36,7 +36,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        {console.log('User------',this.state.user)}
+        {console.log("User------", this.state.user)}
         <Nave user={this.state.user} />
         <Switch>
           <Route exact path="/" component={Allplants} />
