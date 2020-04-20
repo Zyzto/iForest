@@ -1,7 +1,18 @@
 const router = require("express").Router();
 const User = require("../models/user.model");
 const Plant = require("../models/plant.model");
+const multer = require('multer');
 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+  cb(null, 'public')
+},
+filename: function (req, file, cb) {
+  cb(null, Date.now() + '-' +file.originalname )
+}
+})
+
+var upload = multer({ storage: storage }).single('file')
 //Show
 router.get("/", (req, res) => {
   Plant.find()
@@ -28,10 +39,21 @@ router.get("/plant/:id", (req, res) => {
 
 //CREATE
 router.post("/plant/create", (req, res) => {
-  const { name, image, description, type } = req.body;
+  console.log(req)
+  console.log(req.plant)
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+        return res.status(500).json(err)
+    } else if (err) {
+        return res.status(500).json(err)
+    }
+// return res.status(200).send(req.file)
+const { name, image, description, type } = req.body;
   const valid = { name, image, description, type };
+  valid.image = req.file;
   let plant = new Plant(valid);
-  plant
+  console.log(req.body)
+plant
     .save()
     .then(() => {
       return res.json({ plant });
@@ -40,6 +62,9 @@ router.post("/plant/create", (req, res) => {
       console.log("err", err);
       return res.json({ message: [err.errors] });
     });
+})
+
+  
 });
 
 //UPDATE

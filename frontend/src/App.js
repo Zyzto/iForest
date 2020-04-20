@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Allplants from "./Plants/Allplants";
+import {AddPlant} from "./Plants/AddPlant";
 import Nave from "./Navebar/Nave";
 import { Login } from "./auth/Login.jsx";
 import { Register } from "./auth/Register.jsx";
@@ -40,6 +41,7 @@ export default class App extends Component {
         <Nave user={this.state.user} />
         <Switch>
           <Route exact path="/" component={Allplants} />
+          <Route exact path="/AddPlant" component={AddPlant} />
           <Route
             path="/login"
             render={(props) => <Login {...props} userLogin={this.userLogin} />}
