@@ -27,12 +27,7 @@ export default class App extends Component {
         user,
         isLogin: true,
       });
-    } else {
-      this.setState({
-        user: null,
-        isLogin: false,
-      });
-    }
+    } 
   };
   render() {
     return (

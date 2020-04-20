@@ -5,7 +5,7 @@ const multer = require('multer');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-  cb(null, 'public')
+  cb(null, './public')
 },
 filename: function (req, file, cb) {
   cb(null, Date.now() + '-' +file.originalname )
@@ -48,10 +48,9 @@ router.post("/plant/create", (req, res) => {
         return res.status(500).json(err)
     }
 // return res.status(200).send(req.file)
-const { name, image, description, type } = req.body;
-  const valid = { name, image, description, type };
-  valid.image = req.file;
-  let plant = new Plant(valid);
+ let plantsData = JSON.parse(req.body.plant)
+ plantsData.image = req.file.filename
+  let plant = new Plant(plantsData);
   console.log(req.body)
 plant
     .save()

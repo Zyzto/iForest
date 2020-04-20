@@ -1,42 +1,37 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState } from 'react'
 import { Row, Form, Col, Button, Alert } from "react-bootstrap";
 import Axios from "axios";
 import URL from "../config/api";
 
 export const AddPlant = (props) => {
     const [plant, setPlant] = useState({}); // plant info
-    const [file,setFile] = useState( null );
+    const [file, setFile] = useState(null);
 
-  //to add the input inside plant
-  let onChangeInput = ({ target: { name, value } }) => {
-    setPlant({ ...plant, [name]: value });
-  };
-  
-//method for uploading file (image)
-   let onChangeHandler= (event)=>{
-    setFile(event.target.files[0])
-}
-useEffect(() => {
-  
-})
-  // to add the plant info to database
-  let onSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData()
-    data.append('file', file)
-    data.append('plant', plant)
-    // let uploaddata = {...plant, ...data}
-    // console.log(uploaddata)
-    
-    Axios.post(`${URL}/plant/create`,data )
-      .then((res) => {
-        console.log(res)  
-       
-        props.history.push("/");
-      })
-      .catch((err) => console.log(err));
-  };
-  //==================================================
+    //to add the input inside plant
+    let onChangeInput = ({ target: { name, value } }) => {
+        setPlant({ ...plant, [name]: value });
+    };
+
+    //method for uploading file (image)
+    let onChangeHandler = (event) => {
+        setFile(event.target.files[0])
+    }
+
+    // to add the plant info to database
+    let onSubmit = (e) => {
+        e.preventDefault();
+        const data = new FormData()
+        data.append('file', file)
+        data.append("plant", JSON.stringify(plant));
+        Axios.post(`${URL}/plant/create`, data, { plant: JSON.stringify(plant) })
+            .then((res) => {
+                console.log(res)
+
+                props.history.push("/");
+            })
+            .catch((err) => console.log(err));
+    };
+    //==================================================
     return (
         <div>
             <h3>Add a plant</h3>
