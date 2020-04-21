@@ -34,7 +34,7 @@ const Nave = () => {
         <LinkContainer to="#action_3.1">
           <NavDropdown.Item>Account</NavDropdown.Item>
         </LinkContainer>
-        <LinkContainer to="#action_3.2">
+        <LinkContainer as={Link} to="/AddPlant">
           <NavDropdown.Item>Add a plant</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="#action_3.3">
