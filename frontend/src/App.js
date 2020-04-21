@@ -1,52 +1,84 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Allplants from "./Plants/Allplants";
 import Nave from "./Navebar/Nave";
 import { Login } from "./auth/Login.jsx";
 import { Register } from "./auth/Register.jsx";
+import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
+import URL from './config/api'
 
-export default class App extends Component {
-  state = {
-    user: null,
-    isLogin: false,
-  };
+const App = (props) => {
+  const [user, setUser] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  // state = {
+  //   user: null,
+  //   isLogin: false,
+  //   userInfo: {}
+  // };
 
-  componentDidMount() {
-    this.userLogin();
-  }
+  useEffect(() => {
+    userLogin();
+    getProfileHandle();
+  });
+
 
   //Login jwt decoding
-  userLogin =  () => {
-    if (localStorage.token !== undefined) {
-      let user = jwt_decode(localStorage.token).user;
-      this.setState({
-        user,
-        isLogin: true,
-      });
+  const userLogin = () => {
+    console.log(user);
+    if (user == null) {
+      if (localStorage.token) {
+        setUser(jwt_decode(localStorage.token).user);
+        setIsLogin(true);
+        // console.log(user,isLogin)
+      } else {
+        setUser(null);
+        setIsLogin(false);
+      }
     } else {
-      this.setState({
-        user: null,
-        isLogin: false,
-      });
+      console.log("hello");
     }
   };
-  render() {
-    return (
-      <div>
-        {console.log("User------", this.state.user)}
-        <Nave user={this.state.user} />
-        <Switch>
-          <Route exact path="/" component={Allplants} />
-          <Route
-            path="/login"
-            render={(props) => <Login {...props} userLogin={this.userLogin} />}
-          />
-          <Route path="/register" component={Register} />
-        </Switch>
-      </div>
-    );
-  }
-}
+
+  const onLogoutHandler = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setUserInfo({});
+    setIsLogin(false);
+  };
+
+  const getProfileHandle = () => {
+    console.log('user',user,'userinfo',userInfo)
+    if (user && !userInfo.firstName) {
+      console.log(`${URL}/api/auth/${user.id}`);
+      axios.get(`${URL}/api/auth/${user.id}`,'-password').then((result) => {
+        console.log("----------", result);
+        setUserInfo(result.data.user);
+      });
+      // console.log("user", user, "userinfo", userInfo);
+    }
+  };
+  
+  return (
+    <div>
+        <Nave
+          user={user}
+          onLogoutHandler={onLogoutHandler}
+          userInfo={userInfo}
+        />
+      <Switch>
+        <Route exact path="/" component={Allplants} />
+        <Route
+          path="/login"
+          render={(props) => <Login {...props} userLogin={userLogin} />}
+        />
+        <Route path="/register" component={Register} />
+      </Switch>
+    </div>
+  );
+};
+
+export default App;
