@@ -102,9 +102,9 @@ router.post("/login", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id,'-password');
     if (!user) return res.json({ message: "No User Found!" });
-    return res.json({ user });
+    return res.status(200).json({ user });
   } catch (error) {
     res.json({ message: "Can't Get Information", error });
   }
