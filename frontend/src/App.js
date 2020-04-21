@@ -7,6 +7,7 @@ import { Register } from "./auth/Register.jsx";
 import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+import { Editplant } from "./Plants/Editplant";
 
 export default class App extends Component {
   state = {
@@ -40,6 +41,7 @@ export default class App extends Component {
         <Nave user={this.state.user} />
         <Switch>
           <Route exact path="/" component={Allplants} />
+          <Route exact path="/Edit" component={Editplant}/>
           <Route
             path="/login"
             render={(props) => <Login {...props} userLogin={this.userLogin} />}
