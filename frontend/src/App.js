@@ -65,13 +65,10 @@ const App = (props) => {
   
   return (
     <div>
-        <Nave
-          user={user}
-          onLogoutHandler={onLogoutHandler}
-          userInfo={userInfo}
-        />
+      <Nave user={user} onLogoutHandler={onLogoutHandler} userInfo={userInfo} />
       <Switch>
         <Route exact path="/" component={Allplants} />
+        <Route exact path="/AddPlant" component={AddPlant} />
         <Route
           path="/login"
           render={(props) => <Login {...props} userLogin={userLogin} />}
