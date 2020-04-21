@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Allplants from "./Plants/Allplants";
+import {AddPlant} from "./Plants/AddPlant";
 import Nave from "./Navebar/Nave";
 import { Login } from "./auth/Login.jsx";
 import { Register } from "./auth/Register.jsx";
