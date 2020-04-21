@@ -6,48 +6,59 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import URL from "../config/api";
 
-const Nave = () => {
-  const [userInfo, setuserInfo] = useState({});
+const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
+  // const [userInfo, setuserInfo] = useState({});
 
-  const getName = async () => {
-    if (localStorage.token) {
-      let user = await jwt_decode(localStorage.token).user;
-      console.log(`${URL}/api/auth/${user.id}`);
-      axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
-        console.log("----------", result);
-        setuserInfo(result.data.user);
-      });
-    }
-  };
+  // const getName = async () => {
+  //   if (localStorage.token) {
+  //     let user = await jwt_decode(localStorage.token).user;
+  //     console.log(`${URL}/api/auth/${user.id}`);
+  //     axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
+  //       console.log("----------", result);
+  //       setuserInfo(result.data.user);
+  //     });
+  //   }
+  // };
   useEffect(() => {
-    getName();
-    console.log(userInfo);
+    // getName();
+    console.log("", userInfo);
   }, []);
+
+  const logout = () => {
+    onLogoutHandler();
+  };
 
   const authNavDetails = localStorage.token ? (
     <>
-      <NavDropdown
-        title={userInfo.firstName}
-        alignRight
-        id="dropdown-menu-align-right"
-      >
-        <LinkContainer to="#action_3.1">
-          <NavDropdown.Item>Account</NavDropdown.Item>
-        </LinkContainer>
-        <LinkContainer as={Link} to="/AddPlant">
-          <NavDropdown.Item>Add a plant</NavDropdown.Item>
-        </LinkContainer>
-        <LinkContainer to="#action_3.3">
-          <NavDropdown.Item>My Garden</NavDropdown.Item>
-        </LinkContainer>
-      </NavDropdown>
+      {userInfo.firstName ? (
+        <>
+          <Nav.Link as={Link} to="#hello">
+            Reminders
+          </Nav.Link>
+          <NavDropdown
+            title={userInfo.firstName}
+            alignRight
+            id="dropdown-menu-align-right"
+          >
+            <LinkContainer to="#action_3.1">
+              <NavDropdown.Item>Account</NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to="/AddPlant">
+              <NavDropdown.Item>Add a plant</NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to="#action_3.3">
+              <NavDropdown.Item>My Garden</NavDropdown.Item>
+            </LinkContainer>
+          </NavDropdown>
+        </>
+      ) : (
+        <Spinner />
+      )}
       <Nav.Link
         as={Link}
-        to="/logout"
+        to="/"
         onClick={() => {
-          localStorage.removeItem("token");
-          // this.forceUpdate();
-          Redirect("/");
+          onLogoutHandler();
         }}
       >
         Logout
@@ -71,11 +82,7 @@ const Nave = () => {
             iForest
           </Navbar.Brand>
         </Nav>
-        <Nav>
-          <Nav.Link as={Link} to="#hello">
-            Reminders
-          </Nav.Link>
-        </Nav>
+
         <Nav>{authNavDetails}</Nav>
       </Navbar>
     </>
