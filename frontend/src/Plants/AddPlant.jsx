@@ -35,8 +35,9 @@ export const AddPlant = (props) => {
     };
     //==================================================
     return (
-        <div>
-            <h3>Add a plant</h3>
+        <div className="mt-5">
+             <h6 className="title"> PLANT COLLECTION</h6>
+            <h2 className="title"> Add you plant .. </h2>
             <Form className="mt-5">
                 <Row className="justify-content-center mt-5">
                     <Col md={6}>
@@ -89,7 +90,11 @@ export const AddPlant = (props) => {
                     </Col>
                 </Row>
                 <Row className="justify-content-center">
-                    <Button variant="primary" type="submit" onClick={(e) => onSubmit(e)}>
+                    <Button 
+                    variant="primary"
+                    className="bn-primary"
+                    type="submit"
+                    onClick={(e) => onSubmit(e)}>
                         Add Plant
                     </Button>
                 </Row>

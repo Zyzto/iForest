@@ -23,7 +23,8 @@ const Allplants = () => {
 
   return (
     <div>
-      <h3>Plants</h3>
+      <h1 className="title-1"> Welcome aboard!</h1>
+      <h2 className="title-2">Engage with plant lovers from all over the world .. <br/>Explore the plant care guide !! </h2>
       <Container fluid>
         <Row className={"d-flex justify-content-center"}>
           <PlantCard Plants={Plants} />

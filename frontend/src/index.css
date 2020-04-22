@@ -21,6 +21,24 @@ code {
   background-color: #d0af8a !important;
 }
 .nav{
+  color: #000 !important;
   border-color: #d0af8a !important;
 }
+.title{
+  color: #d0af8a !important;
+  margin-left: 70px;
+}
+.title-1{
+  color: #d0af8a !important;
+  margin: 50px 50px;
+}
+.title-2{
+  color: #d0af8a !important;
+  margin: 50px 70px;
+}
 
+.bn-primary{
+  color: #f3f7ec !important;
+  background-color: #d0af8a !important;
+  border-color: #d0af8a !important;
+}
