@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Image, Card, ListGroup, Button } from 'react-bootstrap'
-import URL from '../config/api'
-import Axios from 'axios'
 
 export default class OnePlant extends Component {
     state={

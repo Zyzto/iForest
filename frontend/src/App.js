@@ -7,17 +7,16 @@ import { Login } from "./auth/Login.jsx";
 import { Register } from "./auth/Register.jsx";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { Switch, Route, Redirect } from "react-router-dom";
-import  EditUserInfo  from "./user/EditUserInfo";
+import { Switch, Route } from "react-router-dom";
+import EditUserInfo from "./user/EditUserInfo";
 import { MyGarden } from "./Plants/MyGarden";
-import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
 import OnePlant from "./Plants/OnePlant";
 import Editplant from "./Plants/Editplant";
 
 const App = (props) => {
   const [user, setUser] = useState(null);
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   // state = {
   //   user: null,
@@ -36,11 +35,11 @@ const App = (props) => {
     if (user == null) {
       if (localStorage.token) {
         setUser(jwt_decode(localStorage.token).user);
-        setIsLogin(true);
+        // setIsLogin(true);
         // console.log(user,isLogin)
       } else {
         setUser(null);
-        setIsLogin(false);
+        // setIsLogin(false);
       }
     } else {
       console.log("hello");
@@ -51,7 +50,7 @@ const App = (props) => {
     localStorage.removeItem("token");
     setUser(null);
     setUserInfo({});
-    setIsLogin(false);
+    // setIsLogin(false);
   };
 
   const getProfileHandle = () => {
@@ -83,30 +82,34 @@ const App = (props) => {
     }
   };
 
-
-  
-  console.log(userInfo)
+  console.log(userInfo);
   return (
     <div>
       <Nave user={user} onLogoutHandler={onLogoutHandler} userInfo={userInfo} />
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
-        <Route exact 
-        path="/MyGarden"
-        render={(props) =>  <MyGarden {...props} 
-        userLogin={userLogin} 
-        user={userInfo}  />}
-         />
-        <Route exact path="/oneplant" component={OnePlant}/>
+        <Route
+          exact
+          path="/MyGarden"
+          render={(props) => (
+            <MyGarden {...props} userLogin={userLogin} user={userInfo} />
+          )}
+        />
+        <Route exact path="/oneplant" component={OnePlant} />
         <Route path="/oneplant/:id" component={Editplant} />
-        <Route exact 
-        path="/EditUserInfo"
-        render={(props) =>  <EditUserInfo {...props} 
-        userLogin={userLogin} 
-        user={userInfo}  
-        update={updateUser}/>} 
-         />
+        <Route
+          exact
+          path="/EditUserInfo"
+          render={(props) => (
+            <EditUserInfo
+              {...props}
+              userLogin={userLogin}
+              user={userInfo}
+              update={updateUser}
+            />
+          )}
+        />
 
         <Route
           path="/login"

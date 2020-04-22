@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Button, NavDropdown, Spinner } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navbar, Nav, NavDropdown, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import URL from "../config/api";
+// import axios from "axios";
+// import jwt_decode from "jwt-decode";
+// import URL from "../config/api";
 
-const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
+const Nave = ({ onLogoutHandler, userInfo }) => {
   // const [userInfo, setuserInfo] = useState({});
 
   // const getName = async () => {
@@ -21,12 +21,8 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
   // };
   useEffect(() => {
     // getName();
-    console.log("", userInfo);
+    // console.log("", userInfo);
   }, []);
-
-  const logout = () => {
-    onLogoutHandler();
-  };
 
   const authNavDetails = localStorage.token ? (
     <>
@@ -76,10 +72,7 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
   );
   return userInfo ? (
     <>
-      <Navbar className="nav"
-       bg="dark" 
-       variant="dark"
-        >
+      <Navbar className="nav" bg="dark" variant="dark">
         <Nav className="mr-auto">
           <Navbar.Brand as={Link} to="/">
             iForest
