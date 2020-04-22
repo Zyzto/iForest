@@ -13,8 +13,9 @@ filename: function (req, file, cb) {
 })
 
 var upload = multer({ storage: storage }).single('file')
+
 //Show
-router.get("/", (req, res) => {
+router.get("/plants", (req, res) => {
   Plant.find()
     .then((plants) => {
       return res.json({ message: plants });
@@ -39,31 +40,29 @@ router.get("/plant/:id", (req, res) => {
 
 //CREATE
 router.post("/plant/create", (req, res) => {
-  console.log(req)
-  console.log(req.plant)
+  console.log('fileD',req.file);
+  console.log(req.plant);
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-        return res.status(500).json(err)
+      return res.status(500).json(err);
     } else if (err) {
-        return res.status(500).json(err)
+      return res.status(500).json(err);
     }
-// return res.status(200).send(req.file)
- let plantsData = JSON.parse(req.body.plant)
- plantsData.image = req.file.filename
-  let plant = new Plant(plantsData);
-  console.log(req.body)
-plant
-    .save()
-    .then(() => {
-      return res.json({ plant });
-    })
-    .catch((err) => {
-      console.log("err", err);
-      return res.json({ message: [err.errors] });
-    });
-})
-
-  
+    // return res.status(200).send(req.file)
+    let plantsData = JSON.parse(req.body.plant);
+    plantsData.image = req.file.filename;
+    let plant = new Plant(plantsData);
+    console.log(req.body);
+    plant
+      .save()
+      .then(() => {
+        return res.json({ plant });
+      })
+      .catch((err) => {
+        console.log("err", err);
+        return res.json({ message: [err.errors] });
+      });
+  });
 });
 
 //UPDATE
