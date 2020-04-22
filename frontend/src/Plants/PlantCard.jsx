@@ -7,6 +7,8 @@ import {
   Col,
   Spinner,
   Modal,
+  ListGroup,
+  ListGroupItem,
 } from "react-bootstrap";
 import URL from "../config/api";
 
@@ -16,7 +18,9 @@ const PlantCard = ({ Plants }) => {
 
   const handleClose = () => {
     setShow(false);
-    setModalInfo({});
+    setTimeout(() => {
+      setModalInfo({});
+    }, 200);
   };
   function handleShow(plant) {
     setShow(true);
@@ -24,10 +28,17 @@ const PlantCard = ({ Plants }) => {
   }
   return (
     <>
-      <Modal show={show} onHide={handleClose} animation={false}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        animation={true}
+        dialogClassName="modal-90w"
+        aria-labelledby="example-custom-modal-styling-title"
+      >
         <Modal.Header closeButton>
           <Modal.Title>{modalInfo.name}</Modal.Title>
         </Modal.Header>
+        <img src={`${URL}/${modalInfo.image}`}></img>
         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
       </Modal>
       {Plants.length > 1 ? (
@@ -45,6 +56,11 @@ const PlantCard = ({ Plants }) => {
                 />
                 <Card.Body>
                   <Card.Title>{plant.name}</Card.Title>
+                  <Card.Text>{plant.description}</Card.Text>
+                  <ListGroup className="list-group-flush">
+                    <ListGroupItem>{plant.sunTime}</ListGroupItem>
+                    <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                  </ListGroup>
                   <Button variant="primary" onClick={() => handleShow(plant)}>
                     Show
                   </Button>

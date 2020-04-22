@@ -103,10 +103,9 @@ router.post("/login", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id, '-password').populate(
+    const user = await User.findById(req.params.id, "-password").populate(
       "plants"
     );
-
     if (!user) return res.json({ message: "No User Found!" });
     return res.status(200).json({ user });
   } catch (error) {
@@ -125,12 +124,10 @@ router.put("/update", isLoggedIn, async (req, res) => {
     if (!user) throw error;
 
     res.status(200).json({ message: "User Updated!" });
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({ message: "something went wrong!" });
   }
-
 });
 
 module.exports = router;
