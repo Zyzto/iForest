@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const isLoggedIn = require("../config/config");
 
 // /api/auth/
 // Register Route
@@ -108,6 +109,25 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res.json({ message: "Can't Get Information", error });
   }
+});
+
+// update user info route
+router.put("/update", isLoggedIn, async (req, res) => {
+  console.log(req.user);
+  console.log(req.body);
+  let inputUser = { ...req.body };
+  try {
+    inputUser.password = await bcrypt.hash(req.body.password, 10);
+    let user = await User.findByIdAndUpdate(req.user.id, inputUser);
+    if (!user) throw error;
+
+    res.status(200).json({ message: "User Updated!" });
+
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: "something went wrong!" });
+  }
+  
 });
 
 module.exports = router;
