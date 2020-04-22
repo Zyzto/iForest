@@ -58,7 +58,7 @@ export default class EditUserInfo extends Component {
             <Form.Control
               name="lastName"
               onChange={this.changeHandler}
-              value={user? user.lastName : ""}
+              value={user.lastName}
             />
           </Form.Group>
           <Form.Group>
@@ -66,7 +66,7 @@ export default class EditUserInfo extends Component {
             <Form.Control
               name="email"
               onChange={this.changeHandler}
-              value={user? user.email : ""}
+              value={user.email}
             />
           </Form.Group>
           <Form.Group>
@@ -74,6 +74,7 @@ export default class EditUserInfo extends Component {
             <Form.Control
               name="password"
               type="password"
+              value={user.password}
               onChange={this.changeHandler}
             />
           </Form.Group>

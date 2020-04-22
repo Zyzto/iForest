@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Editplant } from "./Plants/Editplant";
 import  EditUserInfo  from "./user/EditUserInfo";
+import { MyGarden } from "./Plants/MyGarden";
 import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
 
@@ -90,10 +91,13 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
+        <Route exact path="/MyGarden" component={MyGarden} />
         <Route exact path="/Edit" component={Editplant} />
         <Route exact 
         path="/EditUserInfo"
-        render={(props) =>  <EditUserInfo {...props} userLogin={userLogin} user={userInfo}  
+        render={(props) =>  <EditUserInfo {...props} 
+        userLogin={userLogin} 
+        user={userInfo}  
         update={updateUser}/>} 
          />
         <Route
