@@ -9,6 +9,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Editplant } from "./Plants/Editplant";
+import  EditUserInfo  from "./user/EditUserInfo";
 import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
 import OnePlant from "./Plants/OnePlant";
@@ -56,7 +57,7 @@ const App = (props) => {
     console.log("user", user, "userinfo", userInfo);
     if (user && !userInfo.firstName) {
       console.log(`${URL}/api/auth/${user.id}`);
-      axios.get(`${URL}/api/auth/${user.id}`, "-password").then((result) => {
+      axios.get(`${URL}/api/auth/${user.id}`).then((result) => {
         console.log("----------", result);
         setUserInfo(result.data.user);
       });
@@ -64,14 +65,42 @@ const App = (props) => {
     }
   };
 
+  const updateUser = async (cred) => {
+    // let tempState = { ...this.state };
+    try {
+      /* put to update already exisiting method */
+      await axios.put(`${URL}/api/auth/update`, cred, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      });
+
+      this.getUser(localStorage.getItem("token"));
+    } catch (err) {
+      // tempState.message = "Unable to update User data!";
+      // this.setState(tempState);
+    }
+  };
+
+
+  
+  console.log(userInfo)
   return (
     <div>
       <Nave user={user} onLogoutHandler={onLogoutHandler} userInfo={userInfo} />
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
+
         <Route exact path="/oneplant" component={OnePlant}/>
         <Route path="/oneplant/:id" component={Editplant} />
+
+        <Route exact 
+        path="/EditUserInfo"
+        render={(props) =>  <EditUserInfo {...props} userLogin={userLogin} user={userInfo}  
+        update={updateUser}/>} 
+         />
+
         <Route
           path="/login"
           render={(props) => <Login {...props} userLogin={userLogin} />}

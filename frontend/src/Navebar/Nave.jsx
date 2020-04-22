@@ -40,7 +40,7 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
             alignRight
             id="dropdown-menu-align-right"
           >
-            <LinkContainer to="#action_3.1">
+            <LinkContainer to="/EditUserInfo">
               <NavDropdown.Item>Account</NavDropdown.Item>
             </LinkContainer>
             <LinkContainer to="/AddPlant">
