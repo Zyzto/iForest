@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user.model");
 const Plant = require("../models/plant.model");
 const multer = require('multer');
+const isLoggedIn = require("../config/config");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -39,7 +40,7 @@ router.get("/plant/:id", (req, res) => {
 });
 
 //CREATE
-router.post("/plant/create", (req, res) => {
+router.post("/plant/create", isLoggedIn, (req, res) => {
   console.log('fileD',req.file);
   console.log(req.plant);
   upload(req, res, function (err) {
@@ -56,6 +57,12 @@ router.post("/plant/create", (req, res) => {
     plant
       .save()
       .then(() => {
+        User.findById(req.user.id, (err, user) => {
+          user.plants.push(plant)
+          user.save()
+        })
+        plant.user= req.user.id
+        plant.save()
         return res.json({ plant });
       })
       .catch((err) => {

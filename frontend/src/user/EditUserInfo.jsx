@@ -5,9 +5,10 @@ export default class EditUserInfo extends Component {
   state = {
     user: this.props.user, //set props from router to state so as to have a controlled form
   };
-//   update = () => {
-//     this.props.update(this.state.user);
-//   };
+  update = () => {
+    this.props.update(this.state.user);
+    this.props.history.push("/");
+  };
 
   changeHandler = (e) => {
     // console.log("name of field", e.target["name"]);
@@ -28,16 +29,13 @@ export default class EditUserInfo extends Component {
     return null;
   }
 
-//   componentDidUpdate(prevProps, prevState) {
-//     if (this.props.user !== prevProps.user) {
-//       this.selectNew();
-//     }
-//   }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.user !== prevProps.user) {
+    //   this.selectNew();
+    }
+  }
 
-  update = () => {
-    this.props.update(this.state.user);
-  };
-}
+
   
   render() {
     console.log(this.props.user);
