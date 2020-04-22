@@ -44,8 +44,9 @@ const PlantCard = ({ Plants }) => {
       {Plants.length > 1 ? (
         Plants.map((plant, i) => {
           return (
-            <Col md={3} className="m-6" key={i}>
-              <Card 
+            <Col className="d-flex justify-content-center" key={i}>
+              <Card
+                style={{ width: "15rem" }}
                 className={"mt-3 card promoting-card"}
               >
                 <Card.Img
