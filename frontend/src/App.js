@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Allplants from "./Plants/Allplants";
-import {AddPlant} from "./Plants/AddPlant";
+import { AddPlant } from "./Plants/AddPlant";
 import Nave from "./Navebar/Nave";
 import { Login } from "./auth/Login.jsx";
 import { Register } from "./auth/Register.jsx";
@@ -10,8 +10,7 @@ import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Editplant } from "./Plants/Editplant";
 import { Alert, Spinner } from "react-bootstrap";
-import URL from './config/api'
-
+import URL from "./config/api";
 
 const App = (props) => {
   const [user, setUser] = useState(null);
@@ -28,10 +27,9 @@ const App = (props) => {
     getProfileHandle();
   });
 
-
   //Login jwt decoding
   const userLogin = () => {
-    console.log(user);
+    // console.log(user);
     if (user == null) {
       if (localStorage.token) {
         setUser(jwt_decode(localStorage.token).user);
@@ -54,17 +52,17 @@ const App = (props) => {
   };
 
   const getProfileHandle = () => {
-    console.log('user',user,'userinfo',userInfo)
+    console.log("user", user, "userinfo", userInfo);
     if (user && !userInfo.firstName) {
       console.log(`${URL}/api/auth/${user.id}`);
-      axios.get(`${URL}/api/auth/${user.id}`,'-password').then((result) => {
+      axios.get(`${URL}/api/auth/${user.id}`, "-password").then((result) => {
         console.log("----------", result);
         setUserInfo(result.data.user);
       });
       // console.log("user", user, "userinfo", userInfo);
     }
   };
-  
+
   return (
     <div>
       <Nave user={user} onLogoutHandler={onLogoutHandler} userInfo={userInfo} />
