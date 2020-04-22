@@ -46,7 +46,7 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
             <LinkContainer to="/AddPlant">
               <NavDropdown.Item>Add a plant</NavDropdown.Item>
             </LinkContainer>
-            <LinkContainer to="#action_3.3">
+            <LinkContainer to="/MyGarden">
               <NavDropdown.Item>My Garden</NavDropdown.Item>
             </LinkContainer>
           </NavDropdown>
@@ -76,7 +76,10 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
   );
   return userInfo ? (
     <>
-      <Navbar bg="dark" variant="dark">
+      <Navbar className="nav"
+       bg="dark" 
+       variant="dark"
+        >
         <Nav className="mr-auto">
           <Navbar.Brand as={Link} to="/">
             iForest

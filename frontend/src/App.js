@@ -9,6 +9,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
 import  EditUserInfo  from "./user/EditUserInfo";
+import { MyGarden } from "./Plants/MyGarden";
 import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
 import OnePlant from "./Plants/OnePlant";
@@ -91,13 +92,19 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
-
+        <Route exact 
+        path="/MyGarden"
+        render={(props) =>  <MyGarden {...props} 
+        userLogin={userLogin} 
+        user={userInfo}  />}
+         />
         <Route exact path="/oneplant" component={OnePlant}/>
         <Route path="/oneplant/:id" component={Editplant} />
-
         <Route exact 
         path="/EditUserInfo"
-        render={(props) =>  <EditUserInfo {...props} userLogin={userLogin} user={userInfo}  
+        render={(props) =>  <EditUserInfo {...props} 
+        userLogin={userLogin} 
+        user={userInfo}  
         update={updateUser}/>} 
          />
 

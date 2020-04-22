@@ -43,7 +43,8 @@ export default class EditUserInfo extends Component {
     let { user } = this.state;
    
     return (
-      <div>
+      <div className="mt-5">
+        <h2 className="title-2"> Edit your profile .. </h2> 
         <Container>
           <Form.Group>
             <Form.Label>First Name</Form.Label>
@@ -58,7 +59,7 @@ export default class EditUserInfo extends Component {
             <Form.Control
               name="lastName"
               onChange={this.changeHandler}
-              value={user? user.lastName : ""}
+              value={user.lastName}
             />
           </Form.Group>
           <Form.Group>
@@ -66,18 +67,22 @@ export default class EditUserInfo extends Component {
             <Form.Control
               name="email"
               onChange={this.changeHandler}
-              value={user? user.email : ""}
+              value={user.email}
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Change password</Form.Label>
             <Form.Control
               name="password"
               type="password"
+              value={user.password}
               onChange={this.changeHandler}
             />
           </Form.Group>
-          <Button variant="primary" onClick={this.update} block>
+          <Button 
+          variant="primary" 
+          className="bn-primary"
+          onClick={this.update} block>
           Update
           </Button>
         </Container>

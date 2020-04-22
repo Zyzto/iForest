@@ -79,7 +79,9 @@ export const Register = (props) => {
             </Form.Row>
             <Button
               variant="primary"
+              className="bn-primary"
               type="submit"
+              block
               onClick={(e) => onSubmit(e)}
             >
               Register
