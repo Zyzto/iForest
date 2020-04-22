@@ -24,8 +24,8 @@ const Allplants = () => {
   return (
     <div>
       <h3>Plants</h3>
-      <Container fluid>
-        <Row className={"d-flex justify-content-center"}>
+      <Container>
+        <Row className="justify-content-center mt-4" xs={4} md={3}>
           <PlantCard Plants={Plants} />
         </Row>
       </Container>

@@ -11,6 +11,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { Editplant } from "./Plants/Editplant";
 import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
+import OnePlant from "./Plants/OnePlant";
 
 const App = (props) => {
   const [user, setUser] = useState(null);
@@ -69,7 +70,8 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
-        <Route exact path="/Edit" component={Editplant} />
+        <Route exact path="/oneplant" component={OnePlant}/>
+        <Route path="/oneplant/:id" component={Editplant} />
         <Route
           path="/login"
           render={(props) => <Login {...props} userLogin={userLogin} />}

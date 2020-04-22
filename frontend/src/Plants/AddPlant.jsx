@@ -6,6 +6,7 @@ import URL from "../config/api";
 export const AddPlant = (props) => {
     const [plant, setPlant] = useState({}); // plant info
     const [file, setFile] = useState(null);
+    const [filename, setFilename] = useState("Choos File")
 
     //to add the input inside plant
     let onChangeInput = ({ target: { name, value } }) => {
@@ -23,7 +24,7 @@ export const AddPlant = (props) => {
         const data = new FormData()
         data.append('file', file)
         data.append("plant", JSON.stringify(plant));
-        Axios.post(`${URL}/plant/create`, data, { plant: JSON.stringify(plant) })
+        Axios.post(`${URL}/api/plant/create`, data, { plant: JSON.stringify(plant) })
             .then((res) => {
                 console.log(res)
 
@@ -63,7 +64,7 @@ export const AddPlant = (props) => {
                         <Form.Label>Upload image</Form.Label>
                         <Form.File
                             id="custom-file"
-                            label="Upload an image of the plant"
+                            label={filename}
                             name="image"
                             onChange={(e) => onChangeHandler(e)}
                             custom
