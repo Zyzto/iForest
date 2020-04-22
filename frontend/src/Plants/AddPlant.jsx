@@ -23,7 +23,9 @@ export const AddPlant = (props) => {
         const data = new FormData()
         data.append('file', file)
         data.append("plant", JSON.stringify(plant));
-        Axios.post(`${URL}/plant/create`, data, { plant: JSON.stringify(plant) })
+        Axios.post(`${URL}/api/plant/create`, data, { plant: JSON.stringify(plant) ,headers: {
+            "x-auth-token": localStorage.getItem("token"),
+          } })
             .then((res) => {
                 console.log(res)
 
