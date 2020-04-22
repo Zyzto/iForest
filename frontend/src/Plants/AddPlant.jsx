@@ -16,6 +16,7 @@ export const AddPlant = (props) => {
     //method for uploading file (image)
     let onChangeHandler = (event) => {
         setFile(event.target.files[0])
+        setFile(event.target.files[0].name)
     }
 
     // to add the plant info to database

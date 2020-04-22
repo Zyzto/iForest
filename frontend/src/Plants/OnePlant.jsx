@@ -9,6 +9,7 @@ export default class OnePlant extends Component {
     }
     // console.log(this.props.match.params.id)
     componentDidMount(){
+        
     //     Axios.get(`${URL}/api/plant/${this.props.match._id}`)
     //   .then(
     //     (res) =>
