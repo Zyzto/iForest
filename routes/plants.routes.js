@@ -39,6 +39,26 @@ router.get("/plant/:id", (req, res) => {
     });
 });
 
+//Show my garden 
+router.get('/MyGarden', isLoggedIn, (req, res) => {
+   console.log(req.user._id)
+  User.findById(req.user.id)
+      // .populate({
+      //   path: "plants",
+      //   model: "User",
+      // })
+      .populate("plants")
+      .then(user => {
+        console.log(user);
+        let plant = user.plants;
+        return res.json({ plant });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  
+})
+
 //CREATE
 router.post("/plant/create", isLoggedIn, (req, res) => {
   console.log('fileD',req.file);

@@ -76,7 +76,7 @@ const Nave = ({ user, onLogoutHandler, userInfo, history }) => {
   );
   return userInfo ? (
     <>
-      <Navbar bg="dark" variant="dark">
+      <Navbar className="nav" bg="dark" variant="dark">
         <Nav className="mr-auto">
           <Navbar.Brand as={Link} to="/">
             iForest

@@ -4,7 +4,7 @@ require("dotenv").config();
 module.exports = (req, res, next) => {
   // http://localhost:3002/api/?token=
   const token = req.header("x-auth-token");
-
+  
   if (!token) {
     return res
       .status(401)
@@ -12,8 +12,9 @@ module.exports = (req, res, next) => {
   }
 
   try {
+    
     const decoded = jwt.verify(token, process.env.SECRET);
-
+    console.log(decoded)
     req.user = decoded.user;
     next();
   } catch (error) {

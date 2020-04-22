@@ -91,7 +91,12 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
-        <Route exact path="/MyGarden" component={MyGarden} />
+        <Route exact 
+        path="/MyGarden"
+        render={(props) =>  <MyGarden {...props} 
+        userLogin={userLogin} 
+        user={userInfo}  />}
+         />
         <Route exact path="/Edit" component={Editplant} />
         <Route exact 
         path="/EditUserInfo"

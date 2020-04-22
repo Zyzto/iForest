@@ -130,4 +130,5 @@ router.put("/update", isLoggedIn, async (req, res) => {
   }
 });
 
+
 module.exports = router;

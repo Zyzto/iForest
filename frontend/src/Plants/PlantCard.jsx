@@ -45,8 +45,7 @@ const PlantCard = ({ Plants }) => {
         Plants.map((plant, i) => {
           return (
             <Col md={3} className="m-6" key={i}>
-              <Card
-                style={{ width: "15rem" }}
+              <Card 
                 className={"mt-3 card promoting-card"}
               >
                 <Card.Img
@@ -56,12 +55,13 @@ const PlantCard = ({ Plants }) => {
                 />
                 <Card.Body>
                   <Card.Title>{plant.name}</Card.Title>
+                  <Card.Text>{plant.sunTime}</Card.Text>
                   <Card.Text>{plant.description}</Card.Text>
                   <ListGroup className="list-group-flush">
-                    <ListGroupItem>{plant.sunTime}</ListGroupItem>
+                    <ListGroupItem> </ListGroupItem>
                     <ListGroupItem>Vestibulum at eros</ListGroupItem>
                   </ListGroup>
-                  <Button variant="primary" onClick={() => handleShow(plant)}>
+                  <Button className="b-show mt-3 justify-content-center" variant="outline-primary" onClick={() => handleShow(plant)}>
                     Show
                   </Button>
                 </Card.Body>
