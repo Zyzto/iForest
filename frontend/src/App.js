@@ -8,10 +8,11 @@ import { Register } from "./auth/Register.jsx";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Editplant } from "./Plants/Editplant";
 import  EditUserInfo  from "./user/EditUserInfo";
 import { Alert, Spinner } from "react-bootstrap";
 import URL from "./config/api";
+import OnePlant from "./Plants/OnePlant";
+import Editplant from "./Plants/Editplant";
 
 const App = (props) => {
   const [user, setUser] = useState(null);
@@ -90,12 +91,16 @@ const App = (props) => {
       <Switch>
         <Route exact path="/" component={Allplants} />
         <Route exact path="/AddPlant" component={AddPlant} />
-        <Route exact path="/Edit" component={Editplant} />
+
+        <Route exact path="/oneplant" component={OnePlant}/>
+        <Route path="/oneplant/:id" component={Editplant} />
+
         <Route exact 
         path="/EditUserInfo"
         render={(props) =>  <EditUserInfo {...props} userLogin={userLogin} user={userInfo}  
         update={updateUser}/>} 
          />
+
         <Route
           path="/login"
           render={(props) => <Login {...props} userLogin={userLogin} />}
