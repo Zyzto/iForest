@@ -6,11 +6,11 @@ const isLoggedIn = require("../config/config");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-  cb(null, './public')
-},
-filename: function (req, file, cb) {
-  cb(null, Date.now() + '-' +file.originalname )
-}
+    cb(null, './public')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname)
+  }
 })
 
 var upload = multer({ storage: storage }).single('file')
@@ -41,27 +41,22 @@ router.get("/plant/:id", (req, res) => {
 
 //Show my garden 
 router.get('/MyGarden', isLoggedIn, (req, res) => {
-   console.log(req.user._id)
   User.findById(req.user.id)
-      // .populate({
-      //   path: "plants",
-      //   model: "User",
-      // })
-      .populate("plants")
-      .then(user => {
-        console.log(user);
-        let plant = user.plants;
-        return res.json({ plant });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  
+    .populate("plants")
+    .then(user => {
+      console.log(user);
+      let plant = user.plants;
+      return res.json({ plant });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
 })
 
 //CREATE
 router.post("/plant/create", isLoggedIn, (req, res) => {
-  console.log('fileD',req.file);
+  console.log('fileD', req.file);
   console.log(req.plant);
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
@@ -81,7 +76,7 @@ router.post("/plant/create", isLoggedIn, (req, res) => {
           user.plants.push(plant)
           user.save()
         })
-        plant.user= req.user.id
+        plant.user = req.user.id
         plant.save()
         return res.json({ plant });
       })
@@ -113,18 +108,34 @@ router.put("/plant/:id", (req, res) => {
 });
 
 //DELETE
-router.delete("/plant/:id", (req, res) => {
-  Plant.findOne(req.params.id, (err) =>
-    res.json({ message: `failed to delete ${req.params.id}` })
+router.delete("/plant/:id", isLoggedIn, (req, res) => {
+  Plant.findById(req.params.id
   )
     .then((plant) => {
       //need token decode TODO
-      if (plant.user == req.user) {
-        Plant.deleteOne(req.params.id);
+      if (plant.user == req.user.id) {
+        // Plant.findByIdAndDelete(req.params.id)
+        plant.delete()
+       .then(()=>{
+        User.findById(req.user.id).then (()=>{
+
+        let list = user.plants
+        console.log("list",list)
+        let index = list.findIndex(req.params.id)
+        console.log("index", index)
+        let final = list.splice(index, 1)
+        console.log("final", final)
+        user.plants = final
+        user.save()
+        .then (()=>{
+          res.status(200).json({message: `${plant.name} is deleted`})
+        })
+        })
+       }) 
       }
     })
     .catch((err) => {
-      res.json({ err });
+      res.status(401).json({ err });
     });
 });
 
