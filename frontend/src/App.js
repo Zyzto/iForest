@@ -74,8 +74,9 @@ const App = (props) => {
           "x-auth-token": localStorage.getItem("token"),
         },
       });
-
-      this.getUser(localStorage.getItem("token"));
+      setUserInfo({})
+      getProfileHandle()
+      // this.getUser(localStorage.getItem("token"));
     } catch (err) {
       // tempState.message = "Unable to update User data!";
       // this.setState(tempState);

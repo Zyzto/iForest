@@ -119,7 +119,8 @@ router.put("/update", isLoggedIn, async (req, res) => {
   console.log(req.body);
   let inputUser = { ...req.body };
   try {
-    inputUser.password = await bcrypt.hash(req.body.password, 10);
+    if (req.body.password)
+      inputUser.password = await bcrypt.hash(req.body.password, 10);
     let user = await User.findByIdAndUpdate(req.user.id, inputUser);
     if (!user) throw error;
 
