@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import URL from "../config/api";
 import axios from "axios";
 
-const PlantCard = ({ Plants, Flag, setPlants }) => {
+const PlantCard = ({ Plants, Flag, setPlants, userInfo, updateFav }) => {
   const [show, setShow] = useState(false);
   const [modalInfo, setModalInfo] = useState({});
 
@@ -37,12 +37,60 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
     });
     setPlants(Plants.filter((v) => v.id === id));
   };
+
+  const handleFav = (id, check) => {
+    updateFav({ id });
+    // if (check === "❤️") {
+    //   let list = { savePlants: [userInfo.savePlants.filter(id)] };
+    //   updateFav(list);
+    //   console.log("1 LIST", list);
+    // } else {
+    //   let list = { savePlants: [userInfo.savePlants.push(id)] };
+    //   updateFav(list);
+    //   console.log("2 LIST", list);
+    // }
+    // if (userInfo.savePlants.length >= 1) {
+    //   if (check === "❤️") {
+    //     let list = { savePlants: [userInfo.savePlants.filter(id)] };
+    //     updateFav(list);
+    //     console.log("1 LIST", list);
+    //   } else {
+    //     let list = { savePlants: [userInfo.savePlants.push(id)] };
+    //     updateFav(list);
+    //     console.log("2 LIST", list);
+    //   }
+    // } else {
+    //   if (check === "❤️") {
+    //     let list = { savePlants: [] };
+    //     updateFav(list);
+    //     console.log("3 LIST", list);
+    //   } else {
+    //     let list = { savePlants: [id] };
+    //     updateUser(list);
+    //     console.log("4 LIST", list);
+    //   }
+    // }
+  };
+
+  const checkFav = (id) => {
+    console.log("USER INFO", userInfo);
+    if (userInfo.savePlants) {
+      userInfo.savePlants.map((v) => {
+        if (v === id) return "❤️";
+      });
+    } else return "❤️";
+  };
   return (
     <>
       <Modal
         show={show}
         onHide={handleClose}
         animation={true}
+        className="flex"
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        style={{ overflow: "hidden" }}
         // dialogClassName="modal-400w"
         aria-labelledby="example-custom-modal-styling-title"
       >
@@ -50,17 +98,25 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
           <Modal.Title>{modalInfo.name}</Modal.Title>
         </Modal.Header>
         <img
-          width="500px"
+          width="100%"
           height="300px"
           style={{ objectFit: "cover", overflowX: "hidden", width: "auto9" }}
           src={`${URL}/${modalInfo.image}`}
           alt={`${modalInfo.name}`}
         ></img>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <h5>{modalInfo.description}</h5>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem>Expousre: {modalInfo.sunTime}</ListGroupItem>
+            <ListGroupItem>Type: {modalInfo.type}</ListGroupItem>
+          </ListGroup>
+        </Modal.Body>
       </Modal>
 
       {Plants.length >= 1 ? (
         Plants.map((plant, i) => {
+          let fav = checkFav(plant._id);
+          console.log("FAAAAAAAAAAV", fav);
           return (
             <Col className="d-flex justify-content-center" key={i}>
               <Card
@@ -72,6 +128,18 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
                   variant="top"
                   src={`${URL}/${plant.image}`}
                 />
+                <h1
+                  as={Button}
+                  style={{
+                    position: "absolute",
+                    top: "37%",
+                    right: "2%",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleFav(plant._id, fav)}
+                >
+                  {fav == "❤️" ? "❤️" : "🖤"}
+                </h1>
                 <Card.Body>
                   <Card.Title>{plant.name}</Card.Title>
                   <Card.Text>

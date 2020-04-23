@@ -115,8 +115,8 @@ router.get("/:id", async (req, res) => {
 
 // update user info route
 router.put("/update", isLoggedIn, async (req, res) => {
-  console.log(req.user);
-  console.log(req.body);
+  console.log("REQUSER", req.user);
+  console.log("REQBODY", req.body);
   let inputUser = { ...req.body };
   try {
     if (req.body.password)
@@ -128,6 +128,41 @@ router.put("/update", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "something went wrong!" });
+  }
+});
+
+router.put("/update/savedPlants", isLoggedIn, async (req, res) => {
+  console.log("REQUSER", req.user);
+  console.log("REQBODY", req.body);
+  let inputUser = { ...req.body };
+  let oldUser = await User.findById(req.user);
+  let check = oldUser.savedPlants.some(inputUser);
+  if (check) {
+    try {
+      let final = oldUser.savedPlants.filter(inputUser);
+      let user = await User.findByIdAndUpdate(
+        { savedPlants: [...final] },
+        inputUser
+      );
+      if (!user) throw error;
+      res.status(200).json({ message: "plant added to fav" });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "something went wrong!" });
+    }
+  } else {
+    try {
+      let final = oldUser.savedPlants.push(inputUser);
+      let user = await User.findByIdAndUpdate(
+        { savedPlants: [...final] },
+        inputUser
+      );
+      if (!user) throw error;
+      res.status(200).json({ message: "User Updated!" });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: "something went wrong!" });
+    }
   }
 });
 

@@ -74,8 +74,26 @@ const App = (props) => {
           "x-auth-token": localStorage.getItem("token"),
         },
       });
-      setUserInfo({})
-      getProfileHandle()
+      setUserInfo({});
+      getProfileHandle();
+      // this.getUser(localStorage.getItem("token"));
+    } catch (err) {
+      // tempState.message = "Unable to update User data!";
+      // this.setState(tempState);
+    }
+  };
+
+  const updateFav = async (cred) => {
+    // let tempState = { ...this.state };
+    try {
+      /* put to update already exisiting method */
+      await axios.put(`${URL}/api/auth/update/savedPlants`, cred, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      });
+      setUserInfo({});
+      getProfileHandle();
       // this.getUser(localStorage.getItem("token"));
     } catch (err) {
       // tempState.message = "Unable to update User data!";
@@ -88,7 +106,13 @@ const App = (props) => {
     <div>
       <Nave user={user} onLogoutHandler={onLogoutHandler} userInfo={userInfo} />
       <Switch>
-        <Route exact path="/" component={Allplants} />
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <Allplants {...props} userInfo={userInfo} updateFav={updateFav} />
+          )}
+        />
         <Route exact path="/AddPlant" component={AddPlant} />
         <Route
           exact

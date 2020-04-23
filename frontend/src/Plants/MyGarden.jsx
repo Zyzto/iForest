@@ -35,7 +35,12 @@ export const MyGarden = (props) => {
       <h2 className="title">My Garden .. </h2>
       <Container fluid>
         <Row className={"d-flex justify-content-center"}>
-          <PlantCard Plants={Plants} Flag={true} setPlants={setPlants} />
+          <PlantCard
+            Plants={Plants}
+            Flag={true}
+            setPlants={setPlants}
+            userInfo={props.userInfo}
+          />
         </Row>
       </Container>
     </div>
