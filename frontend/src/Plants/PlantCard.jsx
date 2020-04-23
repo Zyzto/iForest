@@ -72,14 +72,14 @@ const PlantCard = ({ Plants, Flag, setPlants, userInfo, updateFav }) => {
     // }
   };
 
-  const checkFav = (id) => {
-    console.log("USER INFO", userInfo);
-    if (userInfo.savePlants) {
-      userInfo.savePlants.map((v) => {
-        if (v === id) return "❤️";
-      });
-    } else return "❤️";
-  };
+  // const checkFav = (id) => {
+  //   console.log("USER INFO", userInfo);
+  //   if (userInfo.savePlants) {
+  //     userInfo.savePlants.map((v) => {
+  //       if (v === id) return "❤️";
+  //     });
+  //   } else return "❤️";
+  // };
   return (
     <>
       <Modal
@@ -115,8 +115,8 @@ const PlantCard = ({ Plants, Flag, setPlants, userInfo, updateFav }) => {
 
       {Plants.length >= 1 ? (
         Plants.map((plant, i) => {
-          let fav = checkFav(plant._id);
-          console.log("FAAAAAAAAAAV", fav);
+          // let fav = checkFav(plant._id);
+          // console.log("FAAAAAAAAAAV", fav);
           return (
             <Col className="d-flex justify-content-center" key={i}>
               <Card
@@ -132,13 +132,13 @@ const PlantCard = ({ Plants, Flag, setPlants, userInfo, updateFav }) => {
                   as={Button}
                   style={{
                     position: "absolute",
-                    top: "37%",
+                    top: "34%",
                     right: "2%",
                     cursor: "pointer",
                   }}
-                  onClick={() => handleFav(plant._id, fav)}
+                  onClick={() => {}}
                 >
-                  {fav == "❤️" ? "❤️" : "🖤"}
+                  {"🖤"}
                 </h1>
                 <Card.Body>
                   <Card.Title>{plant.name}</Card.Title>

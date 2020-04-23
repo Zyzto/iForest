@@ -33,8 +33,8 @@ export const MyGarden = (props) => {
     <div className="mt-5">
       <h6 className="title"> FIND YOUR PLANT</h6>
       <h2 className="title">My Garden .. </h2>
-      <Container fluid>
-        <Row className={"d-flex justify-content-center"}>
+      <Container className="d-flex  justify-content-center">
+        <Row className="d-flex justify-content-center">
           <PlantCard
             Plants={Plants}
             Flag={true}
