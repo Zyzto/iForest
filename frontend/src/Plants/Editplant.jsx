@@ -1,143 +1,159 @@
-import React, { Component } from 'react'
-import { Form, Row, Col, Button } from 'react-bootstrap';
-import Axios from 'axios';
-import URL from '../config/api';
+import React, { useState, useEffect } from "react";
+import { Row, Form, Col, Button } from "react-bootstrap";
+import Axios from "axios";
+import URL from "../config/api";
 
-export default class Editplant extends Component {
+const EditPlant = ({ history, match }) => {
+  const [plant, setPlant] = useState({}); // plant info
+  const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("Choose Image");
+  const [oldPlant, setOldPlant] = useState({});
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: '',
-            name: '',
-            type: '',
-            image: '',
-            description: ''
-        }
+  useEffect(() => {
+    fetchOldPlant();
+    // setPlant({ type: oldPlant.type });
+    // console.log(oldPlant);
+    console.log("PLANTTTTT", plant);
+  });
+  //fetch plant info
+  const fetchOldPlant = async () => {
+    const plantId = match.params.id;
+    let data = await Axios.get(`${URL}/api/plant/${plantId}`, {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    });
+    // console.log("HELLLLLLLLLLLLLLLLL", data);
+    if (!oldPlant.name) {
+      //Show only name without auto genrated Number
+      data.data.message.image = data.data.message.image.split(/-(.+)/)[1];
+      setOldPlant(data.data.message);
     }
+  };
 
-    componentDidMount() {
-        this.getPlants();
-    }
+  //to add the input inside plant
+  let onChangeInput = ({ target: { name, value } }) => {
+    if (name === "type") setOldPlant({ ...oldPlant, ["type"]: "" });
+    setPlant({ ...plant, [name]: value });
+  };
 
-    getPlants()  {
-        let plantId = this.props.match.params.id;
-        Axios.get(`${URL}/api/plant/${plantId}`)
-            .then(res => {
-                this.setState({
-                    id: res.data.id,
-                    name: res.data.name,
-                    type: res.data.type,
-                    image: res.data.imge,
-                    description: res.data.description,
-                }, () => {
-                    console.log(this.state)
-                }
-                )
-            })
-            .catch(err => { console.log(err) })
-    }
+  //method for uploading file (image)
+  let onChangeHandler = (event) => {
+    if (event.target.files[0]) setOldPlant({ ...oldPlant, ["image"]: "" });
+    setFile(event.target.files[0]);
+    setFilename(event.target.files[0].name);
+  };
 
-    state = {
-        palnt: {},
-        setPlant: {},
-        setFile: null
-    }
+  // to add the plant info to database
+  let onSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", file);
+    data.append("plant", JSON.stringify(plant));
+    console.log("DATAAAAA", data);
+    Axios.put(`${URL}/api/plant/${oldPlant._id}`, data, {
+      plant: JSON.stringify(plant),
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
 
-    onChangeHandler = (event) => {
-        
-       this.setFile(event.target.files[0])
-        // setFile(event.target.getAttribute("id"))
-    }
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+  };
+  //==================================================
+  return (
+    <div className="mt-5">
+      <h6 className="title"> PLANT COLLECTION</h6>
+      <h2 className="title"> Edit your plant .. </h2>
+      <Form className="mt-5">
+        <Row className="justify-content-center mt-5">
+          <Col md={6}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Plant name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={oldPlant.name}
+                name="name"
+                onChange={(e) => onChangeInput(e)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col md={2}>
+            <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Label>Plant Type</Form.Label>
+              <Form.Control
+                as="select"
+                name="type"
+                value={oldPlant.type !== "" ? oldPlant.type : plant.type}
+                onChange={(e) => onChangeInput(e)}
+              >
+                <option>Flower</option>
+                <option>Liverworts</option>
+                <option>Hornworts</option>
+                <option>Mosses</option>
+                <option>Ferns</option>
+                <option>Conifers</option>
+                <option>Cycads</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Label>Upload image</Form.Label>
+            <Form.File
+              id="custom-file"
+              label={oldPlant.image !== "" ? oldPlant.image : filename}
+              name="image"
+              onChange={(e) => onChangeHandler(e)}
+              custom
+            />
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col md={6}>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Sun Exposure</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={oldPlant.sunTime}
+                name="sunTime"
+                onChange={(e) => onChangeInput(e)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col md={6}>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="3"
+                name="description"
+                placeholder={oldPlant.description}
+                onChange={(e) => onChangeInput(e)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Button
+            variant="primary"
+            className="bn-primary"
+            type="submit"
+            onClick={(e) => onSubmit(e)}
+          >
+            Add Plant
+          </Button>
+        </Row>
+      </Form>
+    </div>
+  );
+};
 
-    onChangeInput = ({ target: { name, value } }) => {
-        this.setPlant({ ...this.plant, [name]: value });
-
-        const newPlant = {
-            name: this.name.name.valuem,
-            image: this.name.image.value,
-            type: this.name.type.value,
-            description: this.name.description.value
-        }
-        this.editPlant(newPlant);
-    }
-
-    onSubmit = () => {
-        const data = new FormData()
-        data.append('file', this.state.setFile)
-        Axios.put(`${URL}/aip/plant/:id`, data, {
-            plant: JSON.stringify(this.plant), headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            }
-        })
-            .then(res => {
-                console.log(res)
-                this.props.history.push("/:id");
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-
-    render() {
-
-        return (
-            <div>
-                <h2 className="text-center">Edit Plants</h2>
-                <Form className="mt-5">
-                    <Row className="justify-content-center mt-5">
-                        <Col md={6}>
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Plant name</Form.Label>
-                                <Form.Control 
-                                type="text" 
-                                placeholder="plant name" 
-                                name="name" 
-                                onChange={this.onChangeInput} 
-                                value={this.state.name}/>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-
-                    <Row className="justify-content-center">
-                        <Col md={2}>
-                            <Form.Group controlId="exampleForm.ControlSelect1">
-                                <Form.Label>Plant Type</Form.Label>
-                                <Form.Control as="select" name="type" value={this.state.type} onChange={this.onChangeInput}>
-                                    <option>Flower</option>
-                                    <option>Liverworts</option>
-                                    <option>Hornworts</option>
-                                    <option>Mosses</option>
-                                    <option>Ferns</option>
-                                    <option>Conifers</option>
-                                    <option>Cycads</option>
-                                </Form.Control>
-                            </Form.Group>
-                        </Col>
-                        <Col md={4}>
-                            <Form.Label>Image</Form.Label>
-                            <Form.File
-                                id="custom-file"
-                                label="Upload Image"
-                                name="image"
-                                onChange={this.onChangeHandler}
-                                custom
-                                value={this.state.imag}
-                            />
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-center">
-                        <Col md={6}>
-                            <Form.Group controlId="exampleForm.ControlTextarea1">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows="3" name="description" value={this.state.description}/>
-                            </Form.Group>
-
-                            <Button variant="primary" type="submit" onClick={this.onSubmit}>Edit</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        )
-    }
-}
+export default EditPlant;

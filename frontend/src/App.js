@@ -97,7 +97,7 @@ const App = (props) => {
           )}
         />
         <Route exact path="/oneplant" component={OnePlant} />
-        <Route path="/oneplant/:id" component={Editplant} />
+        <Route path="/EditPlant/:id" component={Editplant} />
         <Route
           exact
           path="/EditUserInfo"

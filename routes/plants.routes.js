@@ -87,23 +87,34 @@ router.post("/plant/create", isLoggedIn, (req, res) => {
 });
 
 //UPDATE
-router.put("/plant/:id", (req, res) => {
-  Plant.findOne(req.params.id, (err) =>
-    res.json({ message: `failed to delete ${req.params.id}` })
-  )
-    .then((plant) => {
-      //need token decode TODO
-      if (plant.user == req.user) {
-        plant(req.body)
-          .save()
-          .then(() => {
-            res.json({ message: `${plant.name} Updated` });
-          });
-      }
-    })
-    .catch((err) => {
-      res.json({ err });
-    });
+router.put("/plant/:id", isLoggedIn, async (req, res) => {
+  try {
+    let plant = await Plant.findById(req.params.id);
+    //
+    if (plant.user == req.user.id) {
+      // Plant.findByIdAndDelete(req.params.id)
+      console.log("BODY", req.body);
+      /////////////////////////////////////////////
+      upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+          return res.status(500).json(err);
+        } else if (err) {
+          return res.status(500).json(err);
+        }
+        // return res.status(200).send(req.file)
+        let plantsData = JSON.parse(req.body.plant);
+        if (req.file) plantsData.image = req.file.filename;
+        console.log(req.body);
+        Plant.findByIdAndUpdate(plant._id, plantsData).then(() => {
+          res.status(200).json({ message: `${plant.name} is updated` });
+        });
+      });
+      ////////////////////////////////////////////
+    }
+  } catch (error) {
+    console.log("ERROR Update", error);
+    res.status(401).json({ message: error });
+  }
 });
 
 //DELETE
@@ -119,7 +130,7 @@ router.delete("/plant/:id", isLoggedIn, async (req, res) => {
       //
       console.log("list", user.plants);
 
-      let index = user.plants.findIndex(v=> v==req.params.id);
+      let index = user.plants.findIndex((v) => v == req.params.id);
 
       console.log("index", index);
 

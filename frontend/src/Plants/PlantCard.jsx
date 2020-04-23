@@ -9,6 +9,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import URL from "../config/api";
 import axios from "axios";
 
@@ -29,7 +30,7 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
 
   //Delete
   const handleDelete = async (id) => {
-    let data = await axios.delete(`${URL}/api/plant/${id}`, {
+    await axios.delete(`${URL}/api/plant/${id}`, {
       headers: {
         "x-auth-token": localStorage.getItem("token"),
       },
@@ -84,7 +85,12 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
                     </Button>
                   ) : (
                     <Row className="justify-content-center">
-                      <Button className="b-show m-2" variant="outline-primary">
+                      <Button
+                        className="b-show m-2"
+                        variant="outline-primary"
+                        as={Link}
+                        to={`/EditPlant/${plant._id}`}
+                      >
                         Edit
                       </Button>
                       <Button
