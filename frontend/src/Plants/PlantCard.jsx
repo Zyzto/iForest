@@ -43,13 +43,19 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
         show={show}
         onHide={handleClose}
         animation={true}
-        dialogClassName="modal-90w"
+        // dialogClassName="modal-400w"
         aria-labelledby="example-custom-modal-styling-title"
       >
         <Modal.Header closeButton>
           <Modal.Title>{modalInfo.name}</Modal.Title>
         </Modal.Header>
-        <img src={`${URL}/${modalInfo.image}`} alt={`${modalInfo.name}`}></img>
+        <img
+          width="500px"
+          height="300px"
+          style={{ objectFit: "cover", overflowX: "hidden", width: "auto9" }}
+          src={`${URL}/${modalInfo.image}`}
+          alt={`${modalInfo.name}`}
+        ></img>
         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
       </Modal>
 
@@ -58,7 +64,7 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
           return (
             <Col className="d-flex justify-content-center" key={i}>
               <Card
-                style={{ width: "15rem" }}
+                style={{ width: "17rem" }}
                 className={"mt-3 card promoting-card"}
               >
                 <Card.Img
@@ -68,21 +74,26 @@ const PlantCard = ({ Plants, Flag, setPlants }) => {
                 />
                 <Card.Body>
                   <Card.Title>{plant.name}</Card.Title>
-                  <Card.Text>{plant.sunTime}</Card.Text>
-                  <Card.Text>{plant.description}</Card.Text>
+                  <Card.Text>
+                    {/* To shorten the Description if it's too long */}
+                    {plant.description.split("").length > 30
+                      ? plant.description.substring(0, 26).concat("...")
+                      : plant.description}
+                  </Card.Text>
                   <ListGroup className="list-group-flush">
-                    <ListGroupItem> </ListGroupItem>
-                    <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                    <ListGroupItem>Expousre: {plant.sunTime}</ListGroupItem>
+                    <ListGroupItem>Type: {plant.type}</ListGroupItem>
                   </ListGroup>
+                  <Button
+                    className="b-show mt-3 justify-content-center"
+                    variant="outline-primary"
+                    block
+                    onClick={() => handleShow(plant)}
+                  >
+                    Show
+                  </Button>
                   {!Flag ? (
-                    <Button
-                      className="b-show mt-3 justify-content-center"
-                      variant="outline-primary"
-                      block
-                      onClick={() => handleShow(plant)}
-                    >
-                      Show
-                    </Button>
+                    <></>
                   ) : (
                     <Row className="justify-content-center">
                       <Button
