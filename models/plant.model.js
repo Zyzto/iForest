@@ -17,7 +17,17 @@ const plantSchema = mongoose.Schema({
     required: true,
   },
   description: { type: String, required: true },
-  sunTime: { type: String, required: true },
+  sunTime: {
+    enum: [
+      "Full Sun",
+      "Light Shade",
+      "Partial Shade",
+      "Full Shade",
+      "Dense Shade",
+    ],
+    type: String,
+    required: true,
+  },
   waterPlan: { type: [], required: true },
   rating: { type: [], default: [] },
   comments: { type: [], default: [] },

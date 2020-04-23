@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import { Row, Form, Col, Button} from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Row, Form, Col, Button } from "react-bootstrap";
 import Axios from "axios";
 import URL from "../config/api";
 
 export const AddPlant = (props) => {
-  const [plant, setPlant] = useState({ type: "Flower" }); // plant info
+  const [plant, setPlant] = useState({ type: "Flower",sunTime:'Full Sun' }); // plant info
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("Choose Image");
+
+  useEffect(() => {
+    console.log(plant);
+  });
 
   //to add the input inside plant
   let onChangeInput = ({ target: { name, value } }) => {
@@ -50,7 +54,7 @@ export const AddPlant = (props) => {
               <Form.Label>Plant name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="plant name"
+                placeholder="Example.. Daisy, SunFlower ...etc"
                 name="name"
                 onChange={(e) => onChangeInput(e)}
               />
@@ -89,14 +93,19 @@ export const AddPlant = (props) => {
         </Row>
         <Row className="justify-content-center">
           <Col md={6}>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label>Sun Exposure</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="full sun to partial shade"
+                as="select"
                 name="sunTime"
                 onChange={(e) => onChangeInput(e)}
-              />
+              >
+                <option>Full Sun</option>
+                <option>Light Shade</option>
+                <option>Partial Shade</option>
+                <option>Full Shade</option>
+                <option>Dense Shade</option>
+              </Form.Control>
             </Form.Group>
           </Col>
         </Row>

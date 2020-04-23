@@ -12,7 +12,7 @@ const EditPlant = ({ history, match }) => {
   useEffect(() => {
     fetchOldPlant();
     // setPlant({ type: oldPlant.type });
-    // console.log(oldPlant);
+    console.log(oldPlant);
     console.log("PLANTTTTT", plant);
   });
   //fetch plant info
@@ -33,7 +33,8 @@ const EditPlant = ({ history, match }) => {
 
   //to add the input inside plant
   let onChangeInput = ({ target: { name, value } }) => {
-    if (name === "type") setOldPlant({ ...oldPlant, ["type"]: "" });
+      if (name === "type") setOldPlant({ ...oldPlant, ["type"]: "" });
+      if (name === "sunTime") setOldPlant({ ...oldPlant, ["sunTime"]: "" });
     setPlant({ ...plant, [name]: value });
   };
 
@@ -116,14 +117,22 @@ const EditPlant = ({ history, match }) => {
         </Row>
         <Row className="justify-content-center">
           <Col md={6}>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label>Sun Exposure</Form.Label>
               <Form.Control
-                type="text"
-                placeholder={oldPlant.sunTime}
+                as="select"
                 name="sunTime"
+                value={
+                  oldPlant.sunTime !== "" ? oldPlant.sunTime : plant.sunTime
+                }
                 onChange={(e) => onChangeInput(e)}
-              />
+              >
+                <option>Full Sun</option>
+                <option>Light Shade</option>
+                <option>Partial Shade</option>
+                <option>Full Shade</option>
+                <option>Dense Shade</option>
+              </Form.Control>
             </Form.Group>
           </Col>
         </Row>
